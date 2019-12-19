@@ -1,0 +1,79 @@
+Query 01:
+
+use sakila;
+
+select film.title, category.name as category, film.length from film 
+inner join film_category on film.film_id = film_category.film_id
+inner join category on film_category.category_id = category.category_id
+where category.name = 'Comedy' order by film.length asc limit 10;
+
+Query 02:
+
+use sakila;
+
+select category.name as kategori, count(distinct film.film_id) as jumlahMovie,
+avg(film.rental_rate) from category inner join film_category 
+on category.category_id = film_category.category_id 
+inner join film on film_category.film_id = film.film_id group by category.name 
+order by jumlahMovie desc;
+
+Query 03:
+
+use sakila;
+
+select film.rating, any_value(ratingdesc.decription) as keterangan, count(film.film_id) from film
+inner join ratingdesc on film.rating = ratingdesc.rating_name
+group by film.rating order by film.rating asc;
+
+Query 04:
+
+use sakila;
+
+select actor.actor_id, actor.first_name, actor.last_name, count(film.film_id) as jumlahMovie
+from film inner join film_actor on film.film_id = film_actor.film_id 
+inner join actor on film_actor.actor_id = actor.actor_id group by actor.actor_id 
+order by jumlahMovie desc;
+
+Query 05:
+
+use sakila;
+
+select category.name, count(distinct film.title) as jumlah_Movie from category
+inner join film_category on category.category_id = film_category.category_id
+inner join film on film_category.film_id = film.film_id
+inner join film_actor on film.film_id = film_actor.film_id
+inner join actor on film_actor.actor_id = actor.actor_id
+where actor.actor_id = 107 group by category.name;
+
+Query 06:
+
+use sakila;
+
+select film.title, category.name from category
+inner join film_category on category.category_id = film_category.category_id
+inner join film on film_category.film_id = film.film_id
+inner join film_actor on film.film_id = film_actor.film_id
+inner join actor on film_actor.actor_id = actor.actor_id
+where actor.actor_id = 107 and category.name = 'Sci-Fi' group by film.title;
+
+Query 07:
+
+use sakila;
+
+select actor.actor_id, actor.first_name, actor.last_name, count(film.title) as jumlah_Movie
+from actor inner join film_actor on actor.actor_id = film_actor.actor_id
+inner join film on film_actor.film_id = film.film_id
+inner join film_category on film.film_id = film_category.film_id
+inner join category on film_category.category_id = category.category_id
+where category.name = 'Horror' group by actor.actor_id order by jumlah_Movie desc limit 10;
+
+Query 08:
+
+use sakila;
+
+select film.title, category.name from category
+inner join film_category on category.category_id = film_category.category_id
+inner join film on film_category.film_id = film.film_id
+inner join film_actor on film.film_id = film_actor.film_id
+inner join actor on film_actor.actor_id = actor.actor_id
+where actor.actor_id = 27 and category.name = 'Horror' group by film.title;
